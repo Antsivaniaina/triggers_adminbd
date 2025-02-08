@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ErrorBoundary from './ErrorBoundary';
 import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Container, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import config from '../config';
+
+const { API_URL } = config;
 
 const Transfers = () => {
     const [transfers, setTransfers] = useState([]);
@@ -19,7 +22,7 @@ const Transfers = () => {
 
     const fetchTransfers = async () => {
         try {
-            const response = await axios.get('http://localhost:8002/triggers.adminbd/api/transfers/read.php');
+            const response = await axios.get(`${API_URL}/transfers/read.php`);
             setTransfers(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching transfers:', error);
@@ -34,7 +37,7 @@ const Transfers = () => {
 
     const handleCreateTransfer = async () => {
         try {
-            await axios.post('http://localhost:8002/triggers.adminbd/api/transfers/create.php', formData);
+            await axios.post(`${API_URL}/transfers/create.php`, formData);
             fetchTransfers();
             setFormData({
                 transferNumber: '',
@@ -49,7 +52,7 @@ const Transfers = () => {
 
     const handleUpdateTransfer = async () => {
         try {
-            await axios.post('http://localhost:8002/triggers.adminbd/api/transfers/update.php', formData);
+            await axios.post(`${API_URL}/transfers/update.php`, formData);
             fetchTransfers();
             setFormData({
                 transferNumber: '',
@@ -75,7 +78,7 @@ const Transfers = () => {
 
     const handleDeleteTransfer = async (transferNumber) => {
         try {
-            await axios.delete('http://localhost:8002/triggers.adminbd/api/transfers/delete.php', { data: { transferNumber } });
+            await axios.delete(`${API_URL}/transfers/delete.php`, { data: { transferNumber } });
             fetchTransfers();
         } catch (error) {
             console.error('Error deleting transfer:', error);

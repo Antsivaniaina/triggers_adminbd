@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AppBar, Toolbar, Typography, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import config from '../config';
+
+const { API_URL } = config;
 
 const AuditTransfers = () => {
     const [audits, setAudits] = useState([]);
@@ -11,7 +14,7 @@ const AuditTransfers = () => {
 
     const fetchAudits = async () => {
         try {
-            const response = await axios.get('http://localhost:8002/triggers.adminbd/api/audit/read.php');
+            const response = await axios.get(`${API_URL}/audit/read.php`);
             setAudits(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching audit transfers:', error);
