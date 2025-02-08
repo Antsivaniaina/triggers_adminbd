@@ -8,12 +8,13 @@ const App = () => {
         <Router>
             <div className="container mx-auto p-4">
                 <nav className="mb-4">
-                    <Link to="/" className="mr-4">Transfers</Link>
-                    <Link to="/audit">Audit Transfers</Link>
+                    <Link to="/transfers" className="mr-4">Transfers</Link>
+                    <Link to="/audit-transfers">Audit Transfers</Link>
                 </nav>
                 <Switch>
-                    <Route exact path="/" component={Transfers} />
-                    <Route path="/audit" component={AuditTransfers} />
+                    <Route path="/transfers" component={Transfers} />
+                    <Route path="/audit-transfers" component={AuditTransfers} />
+                    <Route path="/" exact component={Transfers} />
                 </Switch>
             </div>
         </Router>

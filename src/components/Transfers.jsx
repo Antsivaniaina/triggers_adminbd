@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ErrorBoundary from './ErrorBoundary';
+import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Container, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const Transfers = () => {
     const [transfers, setTransfers] = useState([]);
@@ -10,6 +11,7 @@ const Transfers = () => {
         accountNumber: '',
         amount: ''
     });
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         fetchTransfers();
@@ -34,6 +36,12 @@ const Transfers = () => {
         try {
             await axios.post('http://localhost:8002/triggers.adminbd/api/transfers/create.php', formData);
             fetchTransfers();
+            setFormData({
+                transferNumber: '',
+                checkNumber: '',
+                accountNumber: '',
+                amount: ''
+            });
         } catch (error) {
             console.error('Error creating transfer:', error);
         }
@@ -43,9 +51,26 @@ const Transfers = () => {
         try {
             await axios.post('http://localhost:8002/triggers.adminbd/api/transfers/update.php', formData);
             fetchTransfers();
+            setFormData({
+                transferNumber: '',
+                checkNumber: '',
+                accountNumber: '',
+                amount: ''
+            });
+            setIsEditing(false);
         } catch (error) {
             console.error('Error updating transfer:', error);
         }
+    };
+
+    const handleEditTransfer = (transfer) => {
+        setFormData({
+            transferNumber: transfer.transfer_number,
+            checkNumber: transfer.check_number,
+            accountNumber: transfer.account_number,
+            amount: transfer.amount
+        });
+        setIsEditing(true);
     };
 
     const handleDeleteTransfer = async (transferNumber) => {
@@ -59,76 +84,92 @@ const Transfers = () => {
 
     return (
         <ErrorBoundary>
-            <div className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold mb-4">Transfers</h1>
-                <div className="mb-4">
-                    <input
-                        type="text"
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6">
+                        Transfers Management
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Container style={{ marginLeft: 240, padding: '16px' }}>
+                <Typography variant="h4" gutterBottom>
+                    Transfers
+                </Typography>
+                <div style={{ marginBottom: '16px' }}>
+                    <TextField
+                        label="Check Number"
                         name="checkNumber"
-                        placeholder="Check Number"
                         value={formData.checkNumber}
                         onChange={handleInputChange}
-                        className="border p-2 mr-2"
+                        variant="outlined"
+                        style={{ marginRight: '8px' }}
                     />
-                    <input
-                        type="text"
+                    <TextField
+                        label="Account Number"
                         name="accountNumber"
-                        placeholder="Account Number"
                         value={formData.accountNumber}
                         onChange={handleInputChange}
-                        className="border p-2 mr-2"
+                        variant="outlined"
+                        style={{ marginRight: '8px' }}
                     />
-                    <input
-                        type="text"
+                    <TextField
+                        label="Amount"
                         name="amount"
-                        placeholder="Amount"
                         value={formData.amount}
                         onChange={handleInputChange}
-                        className="border p-2 mr-2"
+                        variant="outlined"
+                        style={{ marginRight: '8px' }}
                     />
-                    <button
-                        onClick={handleCreateTransfer}
-                        className="bg-blue-500 text-white p-2 rounded"
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={isEditing ? handleUpdateTransfer : handleCreateTransfer}
+                        style={{ marginRight: '8px' }}
                     >
-                        Create Transfer
-                    </button>
-                    <button
-                        onClick={handleUpdateTransfer}
-                        className="bg-green-500 text-white p-2 rounded ml-2"
-                    >
-                        Update Transfer
-                    </button>
+                        {isEditing ? 'Update Transfer' : 'Create Transfer'}
+                    </Button>
                 </div>
-                <table className="min-w-full bg-white">
-                    <thead>
-                        <tr>
-                            <th className="py-2">Transfer Number</th>
-                            <th className="py-2">Check Number</th>
-                            <th className="py-2">Account Number</th>
-                            <th className="py-2">Amount</th>
-                            <th className="py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {transfers.map((transfer) => (
-                            <tr key={transfer.transfer_number}>
-                                <td className="border px-4 py-2">{transfer.transfer_number}</td>
-                                <td className="border px-4 py-2">{transfer.check_number}</td>
-                                <td className="border px-4 py-2">{transfer.account_number}</td>
-                                <td className="border px-4 py-2">{transfer.amount}</td>
-                                <td className="border px-4 py-2">
-                                    <button
-                                        onClick={() => handleDeleteTransfer(transfer.transfer_number)}
-                                        className="bg-red-500 text-white p-2 rounded"
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Transfer Number</TableCell>
+                                <TableCell>Check Number</TableCell>
+                                <TableCell>Account Number</TableCell>
+                                <TableCell>Amount</TableCell>
+                                <TableCell>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {transfers.map((transfer) => (
+                                <TableRow key={transfer.transfer_number}>
+                                    <TableCell>{transfer.transfer_number}</TableCell>
+                                    <TableCell>{transfer.check_number}</TableCell>
+                                    <TableCell>{transfer.account_number}</TableCell>
+                                    <TableCell>{transfer.amount}</TableCell>
+                                    <TableCell>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleEditTransfer(transfer)}
+                                            style={{ marginRight: '8px' }}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() => handleDeleteTransfer(transfer.transfer_number)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
         </ErrorBoundary>
     );
 };

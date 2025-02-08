@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { AppBar, Toolbar, Typography, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const AuditTransfers = () => {
     const [audits, setAudits] = useState([]);
@@ -11,34 +12,48 @@ const AuditTransfers = () => {
     const fetchAudits = async () => {
         try {
             const response = await axios.get('http://localhost:8002/triggers.adminbd/api/audit/read.php');
-            setAudits(response.data);
+            setAudits(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching audit transfers:', error);
         }
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Audit Transfers</h1>
-            <table className="min-w-full bg-white">
-                <thead>
-                    <tr>
-                        <th className="py-2">Operation Type</th>
-                        <th className="py-2">Transfer Number</th>
-                        <th className="py-2">Operation Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {audits.map((audit) => (
-                        <tr key={audit.id}>
-                            <td className="border px-4 py-2">{audit.operation_type}</td>
-                            <td className="border px-4 py-2">{audit.transfer_number}</td>
-                            <td className="border px-4 py-2">{audit.operation_date}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6">
+                        Audit Transfers Management
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+
+            <Container style={{ marginLeft: 240, padding: '16px' }}>
+                <Typography variant="h4" gutterBottom>
+                    Audit Transfers
+                </Typography>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Operation Type</TableCell>
+                                <TableCell>Transfer Number</TableCell>
+                                <TableCell>Operation Date</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {audits.map((audit) => (
+                                <TableRow key={audit.id}>
+                                    <TableCell>{audit.operation_type}</TableCell>
+                                    <TableCell>{audit.transfer_number}</TableCell>
+                                    <TableCell>{audit.operation_date}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
+        </>
     );
 };
 
