@@ -41,6 +41,9 @@ Avant de pouvoir exécuter ce projet, assurez-vous d'avoir installé les éléme
 
    export default config;
    ```
+2. Back-end
+
+    https://github.com/Antsivaniaina/triggers_adminbd_back.git
 
 ## Exécution
 
