@@ -42,6 +42,9 @@ const AuditTransfers = () => {
                                 <TableCell>Operation Type</TableCell>
                                 <TableCell>Transfer Number</TableCell>
                                 <TableCell>Operation Date</TableCell>
+                                <TableCell>Ancien Solde</TableCell>
+                                <TableCell>New solde</TableCell>
+                                <TableCell>Colonne</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -50,6 +53,9 @@ const AuditTransfers = () => {
                                     <TableCell>{audit.operation_type}</TableCell>
                                     <TableCell>{audit.transfer_number}</TableCell>
                                     <TableCell>{audit.operation_date}</TableCell>
+                                    <TableCell>{audit.ancien_solde}</TableCell>
+                                    <TableCell>{audit.new_solde}</TableCell>
+                                    <TableCell>{audit.colonne}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
