@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ErrorBoundary from './ErrorBoundary';
-import { AppBar, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Container, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import config from '../config';
 
 const { API_URL } = config;
@@ -87,92 +86,81 @@ const Transfers = () => {
 
     return (
         <ErrorBoundary>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6">
-                        Transfers Management
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Container style={{ marginLeft: 240, padding: '16px' }}>
-                <Typography variant="h4" gutterBottom>
-                    Transfers
-                </Typography>
-                <div style={{ marginBottom: '16px' }}>
-                    <TextField
-                        label="Check Number"
+            <header className="bg-blue-600 text-white p-4">
+                <h1 className="text-2xl">Transfers Management</h1>
+            </header>
+            <div className="container mx-auto p-4">
+                <h2 className="text-xl font-bold mb-4">Transfers</h2>
+                <div className="mb-4">
+                    <input
+                        type="text"
                         name="checkNumber"
+                        placeholder="Check Number"
                         value={formData.checkNumber}
                         onChange={handleInputChange}
-                        variant="outlined"
-                        style={{ marginRight: '8px' }}
+                        className="border p-2 mr-2"
                     />
-                    <TextField
-                        label="Account Number"
+                    <input
+                        type="text"
                         name="accountNumber"
+                        placeholder="Account Number"
                         value={formData.accountNumber}
                         onChange={handleInputChange}
-                        variant="outlined"
-                        style={{ marginRight: '8px' }}
+                        className="border p-2 mr-2"
                     />
-                    <TextField
-                        label="Amount"
+                    <input
+                        type="text"
                         name="amount"
+                        placeholder="Amount"
                         value={formData.amount}
                         onChange={handleInputChange}
-                        variant="outlined"
-                        style={{ marginRight: '8px' }}
+                        className="border p-2 mr-2"
                     />
-                    <Button
-                        variant="contained"
-                        color="primary"
+                    <button
                         onClick={isEditing ? handleUpdateTransfer : handleCreateTransfer}
-                        style={{ marginRight: '8px' }}
+                        className="bg-blue-500 text-white p-2 rounded mr-2"
                     >
                         {isEditing ? 'Update Transfer' : 'Create Transfer'}
-                    </Button>
+                    </button>
                 </div>
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Transfer Number</TableCell>
-                                <TableCell>Check Number</TableCell>
-                                <TableCell>Account Number</TableCell>
-                                <TableCell>Amount</TableCell>
-                                <TableCell>Actions</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full bg-white">
+                        <thead>
+                            <tr>
+                                <th className="py-2 px-4 border">Transfer Number</th>
+                                <th className="py-2 px-4 border">Check Number</th>
+                                <th className="py-2 px-4 border">Account Number</th>
+                                <th className="py-2 px-4 border">Amount</th>
+                                <th className="py-2 px-4 border">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {transfers.map((transfer) => (
-                                <TableRow key={transfer.transfer_number}>
-                                    <TableCell>{transfer.transfer_number}</TableCell>
-                                    <TableCell>{transfer.check_number}</TableCell>
-                                    <TableCell>{transfer.account_number}</TableCell>
-                                    <TableCell>{transfer.amount}</TableCell>
-                                    <TableCell>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
+                                <tr key={transfer.transfer_number}>
+                                    <td className="border px-4 py-2">{transfer.transfer_number}</td>
+                                    <td className="border px-4 py-2">{transfer.check_number}</td>
+                                    <td className="border px-4 py-2">{transfer.account_number}</td>
+                                    <td className="border px-4 py-2">{transfer.amount}</td>
+                                    <td className="border px-4 py-2">
+                                        <button
                                             onClick={() => handleEditTransfer(transfer)}
-                                            style={{ marginRight: '8px' }}
+                                            className="bg-green-500 text-white p-2 rounded mr-2"
                                         >
                                             Edit
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            color="error"
+                                        </button>
+                                        <button
                                             onClick={() => handleDeleteTransfer(transfer.transfer_number)}
+                                            className="bg-red-500 text-white p-2 rounded"
                                         >
                                             Delete
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
+                                        </button>
+                                    </td>
+                                </tr>
                             ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </ErrorBoundary>
     );
 };

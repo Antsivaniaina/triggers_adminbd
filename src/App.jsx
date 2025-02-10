@@ -7,9 +7,9 @@ const App = () => {
     return (
         <Router>
             <div className="container mx-auto p-4">
-                <nav className="mb-4">
-                    <Link to="/transfers" className="mr-4">Transfers</Link>
-                    <Link to="/audit-transfers">Audit Transfers</Link>
+                <nav className="mb-4 flex justify-between">
+                    <Link to="/transfers" className="text-blue-500 hover:underline">Transfers</Link>
+                    <Link to="/audit-transfers" className="text-blue-500 hover:underline">Audit Transfers</Link>
                 </nav>
                 <Switch>
                     <Route path="/transfers" component={Transfers} />
