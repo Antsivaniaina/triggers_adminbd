@@ -33,6 +33,19 @@ const AuditTransfers = () => {
         }
     };
 
+    const getOperationTypeClass = (type) => {
+        switch (type) {
+            case 'INSERT':
+                return 'bg-green-100 text-green-800 border-green-400';
+            case 'UPDATE':
+                return 'bg-yellow-100 text-yellow-800 border-yellow-400';
+            case 'DELETE':
+                return 'bg-red-100 text-red-800 border-red-400';
+            default:
+                return '';
+        }
+    };
+
     return (
         <>
             <header className="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 shadow-lg">
@@ -78,7 +91,11 @@ const AuditTransfers = () => {
                         <tbody>
                             {audits.map((audit) => (
                                 <tr key={audit.id} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                    <td className="py-4 px-6">{audit.operation_type}</td>
+                                    <td className="py-4 px-6">
+                                        <span className={`px-2 py-1 rounded-full border ${getOperationTypeClass(audit.operation_type)}`}>
+                                            {audit.operation_type}
+                                        </span>
+                                    </td>
                                     <td className="py-4 px-6">{audit.transfer_number}</td>
                                     <td className="py-4 px-6">{audit.operation_date}</td>
                                     <td className="py-4 px-6">{audit.ancien_solde}</td>
