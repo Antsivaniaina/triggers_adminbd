@@ -86,71 +86,76 @@ const Transfers = () => {
 
     return (
         <ErrorBoundary>
-            <header className="bg-blue-600 text-white p-4">
-                <h1 className="text-2xl">Transfers Management</h1>
+            <header className="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 shadow-lg">
+                <h1 className="text-3xl font-bold">Transfers Management</h1>
             </header>
             <div className="container mx-auto p-4">
-                <h2 className="text-xl font-bold mb-4">Transfers</h2>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        name="checkNumber"
-                        placeholder="Check Number"
-                        value={formData.checkNumber}
-                        onChange={handleInputChange}
-                        className="border p-2 mr-2"
-                    />
-                    <input
-                        type="text"
-                        name="accountNumber"
-                        placeholder="Account Number"
-                        value={formData.accountNumber}
-                        onChange={handleInputChange}
-                        className="border p-2 mr-2"
-                    />
-                    <input
-                        type="text"
-                        name="amount"
-                        placeholder="Amount"
-                        value={formData.amount}
-                        onChange={handleInputChange}
-                        className="border p-2 mr-2"
-                    />
-                    <button
-                        onClick={isEditing ? handleUpdateTransfer : handleCreateTransfer}
-                        className="bg-blue-500 text-white p-2 rounded mr-2"
-                    >
-                        {isEditing ? 'Update Transfer' : 'Create Transfer'}
-                    </button>
+                <h2 className="text-2xl font-bold mb-4">Transfers</h2>
+                <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+                    <h3 className="text-xl font-bold mb-4">{isEditing ? 'Edit Transfer' : 'Add New Transfer'}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input
+                            type="text"
+                            name="checkNumber"
+                            placeholder="Check Number"
+                            value={formData.checkNumber}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded w-full"
+                        />
+                        <input
+                            type="text"
+                            name="accountNumber"
+                            placeholder="Account Number"
+                            value={formData.accountNumber}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded w-full"
+                        />
+                        <input
+                            type="text"
+                            name="amount"
+                            placeholder="Amount"
+                            value={formData.amount}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded w-full"
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <button
+                            onClick={isEditing ? handleUpdateTransfer : handleCreateTransfer}
+                            className="bg-blue-500 text-white p-2 rounded mr-2 transition duration-300 hover:bg-blue-600"
+                        >
+                            {isEditing ? 'Update Transfer' : 'Create Transfer'}
+                        </button>
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white">
-                        <thead>
+                    <table className="min-w-full bg-white shadow-lg rounded-lg">
+                        <thead className="bg-gray-200">
                             <tr>
-                                <th className="py-2 px-4 border">Transfer Number</th>
-                                <th className="py-2 px-4 border">Check Number</th>
-                                <th className="py-2 px-4 border">Account Number</th>
-                                <th className="py-2 px-4 border">Amount</th>
-                                <th className="py-2 px-4 border">Actions</th>
+                                <th className="py-3 px-6 text-left">Transfer Number</th>
+                                <th className="py-3 px-6 text-left">Check Number</th>
+                                <th className="py-3 px-6 text-left">Account Number</th>
+                                <th className="py-3 px-6 text-left">Amount</th>
+                                <th className="py-3 px-6 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {transfers.map((transfer) => (
-                                <tr key={transfer.transfer_number}>
-                                    <td className="border px-4 py-2">{transfer.transfer_number}</td>
-                                    <td className="border px-4 py-2">{transfer.check_number}</td>
-                                    <td className="border px-4 py-2">{transfer.account_number}</td>
-                                    <td className="border px-4 py-2">{transfer.amount}</td>
-                                    <td className="border px-4 py-2">
+                                <tr key={transfer.transfer_number} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                    <td className="py-4 px-6">{transfer.transfer_number}</td>
+                                    <td className="py-4 px-6">{transfer.check_number}</td>
+                                    <td className="py-4 px-6">{transfer.account_number}</td>
+                                    <td className="py-4 px-6">{transfer.amount}</td>
+                                    <td className="py-4 px-6">
                                         <button
                                             onClick={() => handleEditTransfer(transfer)}
-                                            className="bg-green-500 text-white p-2 rounded mr-2"
+                                            className="bg-green-500 text-white p-2 rounded mr-2 transition duration-300 hover:bg-green-600"
                                         >
                                             Edit
                                         </button>
                                         <button
                                             onClick={() => handleDeleteTransfer(transfer.transfer_number)}
-                                            className="bg-red-500 text-white p-2 rounded"
+                                            className="bg-red-500 text-white p-2 rounded transition duration-300 hover:bg-red-600"
                                         >
                                             Delete
                                         </button>

@@ -18,7 +18,7 @@ const AuditTransfers = () => {
             const auditsData = Array.isArray(response.data) ? response.data : [];
             setAudits(auditsData);
 
-            const counts = auditsData.reduce(
+            const countsData = auditsData.reduce(
                 (acc, audit) => {
                     if (audit.operation_type === 'INSERT') acc.insert += 1;
                     if (audit.operation_type === 'UPDATE') acc.update += 1;
@@ -27,7 +27,7 @@ const AuditTransfers = () => {
                 },
                 { insert: 0, update: 0, delete: 0 }
             );
-            setCounts(counts);
+            setCounts(countsData);
         } catch (error) {
             console.error('Error fetching audit transfers:', error);
         }
@@ -35,56 +35,55 @@ const AuditTransfers = () => {
 
     return (
         <>
-            <header className="bg-blue-600 text-white p-4">
-                <h1 className="text-2xl">Audit Transfers Management</h1>
+            <header className="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 shadow-lg">
+                <h1 className="text-3xl font-bold">Audit Transfers Management</h1>
             </header>
-
             <div className="container mx-auto p-4">
-                <h2 className="text-xl font-bold mb-4">Audit Transfers</h2>
+                <h2 className="text-2xl font-bold mb-4">Audit Transfers</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-green-100 p-4 rounded shadow">
+                    <div className="bg-gradient-to-r from-green-400 to-green-600 p-6 rounded-lg shadow-lg transform transition duration-500 hover:scale-105">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-bold">INSERT</h3>
-                            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                            <h3 className="text-lg font-bold text-white">INSERT</h3>
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
                         </div>
-                        <p className="text-2xl">{counts.insert}</p>
+                        <p className="text-4xl text-white">{counts.insert}</p>
                     </div>
-                    <div className="bg-yellow-100 p-4 rounded shadow">
+                    <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-6 rounded-lg shadow-lg transform transition duration-500 hover:scale-105">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-bold">UPDATE</h3>
-                            <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                            <h3 className="text-lg font-bold text-white">UPDATE</h3>
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
                         </div>
-                        <p className="text-2xl">{counts.update}</p>
+                        <p className="text-4xl text-white">{counts.update}</p>
                     </div>
-                    <div className="bg-red-100 p-4 rounded shadow">
+                    <div className="bg-gradient-to-r from-red-400 to-red-600 p-6 rounded-lg shadow-lg transform transition duration-500 hover:scale-105">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-bold">DELETE</h3>
-                            <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                            <h3 className="text-lg font-bold text-white">DELETE</h3>
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
                         </div>
-                        <p className="text-2xl">{counts.delete}</p>
+                        <p className="text-4xl text-white">{counts.delete}</p>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white">
-                        <thead>
+                    <table className="min-w-full bg-white shadow-lg rounded-lg">
+                        <thead className="bg-gray-200">
                             <tr>
-                                <th className="py-2 px-4 border">Operation Type</th>
-                                <th className="py-2 px-4 border">Transfer Number</th>
-                                <th className="py-2 px-4 border">Operation Date</th>
-                                <th className="py-2 px-4 border">Ancien solde</th>
-                                <th className="py-2 px-4 border">Nouvelle solde</th>
-                                <th className="py-2 px-4 border">Colonne modifiée</th>
+                                <th className="py-3 px-6 text-left">Operation Type</th>
+                                <th className="py-3 px-6 text-left">Transfer Number</th>
+                                <th className="py-3 px-6 text-left">Operation Date</th>
+                                <th className="py-3 px-6 text-left">Ancien solde</th>
+                                <th className="py-3 px-6 text-left">Nouvelle solde</th>
+                                <th className="py-3 px-6 text-left">Colonne modifiée</th>
                             </tr>
                         </thead>
                         <tbody>
                             {audits.map((audit) => (
-                                <tr key={audit.id}>
-                                    <td className="border px-4 py-2">{audit.operation_type}</td>
-                                    <td className="border px-4 py-2">{audit.transfer_number}</td>
-                                    <td className="border px-4 py-2">{audit.operation_date}</td>
-                                    <td className="border px-4 py-2">{audit.ancien_solde}</td>
-                                    <td className="border px-4 py-2">{audit.new_solde}</td>
-                                    <td className="border px-4 py-2">{audit.colonne}</td>
+                                <tr key={audit.id} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                    <td className="py-4 px-6">{audit.operation_type}</td>
+                                    <td className="py-4 px-6">{audit.transfer_number}</td>
+                                    <td className="py-4 px-6">{audit.operation_date}</td>
+                                    <td className="py-4 px-6">{audit.ancien_solde}</td>
+                                    <td className="py-4 px-6">{audit.new_solde}</td>
+                                    <td className="py-4 px-6">{audit.colonne}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -96,3 +95,4 @@ const AuditTransfers = () => {
 };
 
 export default AuditTransfers;
+

@@ -7,7 +7,7 @@ const App = () => {
     return (
         <Router>
             <div className="container mx-auto p-4">
-                <nav className="mb-4 flex justify-between">
+                <nav className="mb-4 flex justify-between bg-gray-100 p-4 rounded-lg shadow-lg">
                     <Link to="/transfers" className="text-blue-500 hover:underline">Transfers</Link>
                     <Link to="/audit-transfers" className="text-blue-500 hover:underline">Audit Transfers</Link>
                 </nav>
