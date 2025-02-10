@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AppBar, Toolbar, Typography, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Card, CardContent, Grid, Icon } from '@mui/material';
 import config from '../config';
 
 const { API_URL } = config;
 
 const AuditTransfers = () => {
     const [audits, setAudits] = useState([]);
+    const [counts, setCounts] = useState({ insert: 0, update: 0, delete: 0 });
 
     useEffect(() => {
         fetchAudits();
@@ -15,7 +16,19 @@ const AuditTransfers = () => {
     const fetchAudits = async () => {
         try {
             const response = await axios.get(`${API_URL}/audit/read.php`);
-            setAudits(Array.isArray(response.data) ? response.data : []);
+            const auditsData = Array.isArray(response.data) ? response.data : [];
+            setAudits(auditsData);
+
+            const counts = auditsData.reduce(
+                (acc, audit) => {
+                    if (audit.operation_type === 'INSERT') acc.insert += 1;
+                    if (audit.operation_type === 'UPDATE') acc.update += 1;
+                    if (audit.operation_type === 'DELETE') acc.delete += 1;
+                    return acc;
+                },
+                { insert: 0, update: 0, delete: 0 }
+            );
+            setCounts(counts);
         } catch (error) {
             console.error('Error fetching audit transfers:', error);
         }
@@ -35,6 +48,47 @@ const AuditTransfers = () => {
                 <Typography variant="h4" gutterBottom>
                     Audit Transfers
                 </Typography>
+                <Grid container spacing={3} style={{ marginBottom: '16px' }}>
+                    <Grid item xs={4}>
+                        <Card style={{ background: 'linear-gradient(to right, #e0f7fa, #00c853)' }}>
+                            <CardContent>
+                                <Icon style={{ float: 'right', color: '#00c853' }}>add_circle</Icon>
+                                <Typography variant="h5" component="div">
+                                    INSERT
+                                </Typography>
+                                <Typography variant="h4">
+                                    {counts.insert}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card style={{ background: 'linear-gradient(to right, #fffde7, #ffeb3b)' }}>
+                            <CardContent>
+                                <Icon style={{ float: 'right', color: '#ffeb3b' }}>edit</Icon>
+                                <Typography variant="h5" component="div">
+                                    UPDATE
+                                </Typography>
+                                <Typography variant="h4">
+                                    {counts.update}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Card style={{ background: 'linear-gradient(to right, #ffebee, #d32f2f)' }}>
+                            <CardContent>
+                                <Icon style={{ float: 'right', color: '#d32f2f' }}>delete</Icon>
+                                <Typography variant="h5" component="div">
+                                    DELETE
+                                </Typography>
+                                <Typography variant="h4">
+                                    {counts.delete}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
@@ -42,9 +96,9 @@ const AuditTransfers = () => {
                                 <TableCell>Operation Type</TableCell>
                                 <TableCell>Transfer Number</TableCell>
                                 <TableCell>Operation Date</TableCell>
-                                <TableCell>Ancien Solde</TableCell>
-                                <TableCell>New solde</TableCell>
-                                <TableCell>Colonne</TableCell>
+                                <TableCell>Ancien solde</TableCell>
+                                <TableCell>Nouvelle solde</TableCell>
+                                <TableCell>Colonne modifiée</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
